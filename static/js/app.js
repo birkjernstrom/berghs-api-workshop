@@ -82,6 +82,12 @@
 
       for (i = 0; i < count; i++) {
         product = products[i];
+        product.has_images = product.images.length;
+        product.preview_image = null;
+        if (product.has_images) {
+          product.preview_image = product.images[0].sizes[50];
+        }
+        console.log('product', product);
         body.append(row(product));
       }
 

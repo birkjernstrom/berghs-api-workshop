@@ -6,6 +6,35 @@
         <title>My Awesome Tictail App</title>
 
         <link rel="stylesheet" href="https://sdk.ttcdn.co/tt-uikit-0.11.0.css">
+        <style type="text/css">
+            .product-image {
+                overflow: hidden;
+                border: 1px solid #ddd;
+                display: inline-block;
+                width: 50px;
+                height: 50px;
+                overflow: hidden;
+                padding: 1px;
+                background: no-repeat 50% 50% #fff;
+                -webkit-background-clip: content-box;
+                -moz-background-clip: content-box;
+                background-clip: content-box;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+                border: 1px solid #c5c1c1;
+                text-align: center;
+                vertical-align: middle;
+            }
+
+            .product-title {
+                margin-top: 14px;
+                display: block;
+            }
+
+            .control-label { margin-top: 14px; }
+        </style>
     </head>
     <body>
         <div class="app-container">
@@ -35,11 +64,20 @@
         <script id="template-product-row" type="text/x-handlebars-template">
             {% raw %}
             <tr>
-                <td></td>
-                <td><a href="/product/{{slug}}">{{title}}</a></td>
+                <td>
+                    {{#if has_images}}
+                    <div class="product-image" style="background-image: url({{preview_image}});"></div>
+                    {{/if}}
+                </td>
+                <td><strong class="product-title">{{title}}</strong></td>
                 <td>
                     <input type="hidden" name="product_id" value="{{id}}" />
-                    <input class="form-control" type="text" name="hashtag" value="{{hashtag}}" />
+                    <div class="form-group">
+                        <label class="col-sm-1 control-label">#</label>
+                        <div class="col-sm-11">
+                            <input class="form-control" type="text" name="hashtag" value="{{hashtag}}" />
+                        </div>
+                    </div>
                 </td>
             </tr>
             {% endraw %}
