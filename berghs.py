@@ -49,7 +49,7 @@ def get_products(store_id, access_token):
     return get(get_endpoint_url(access_token, '/stores/{0}/products', store_id))
 
 
-def get_hashtags(store_id, access_token):
+def get_hashtags(store_id):
     store_products = db['products'].get(store_id, [])
     if not store_products:
         return json.dumps([])
@@ -65,7 +65,7 @@ def get_hashtags(store_id, access_token):
     return json.dumps(hashtags)
 
 
-def update_hashtags(store_id, access_token):
+def update_hashtags(store_id):
     resources = flask_request.json
     for resource in resources:
         hashtag = resource['hashtag']
@@ -86,9 +86,9 @@ def get_teapot():
 def get_or_update_hashtags(store_id):
     access_token = flask_request.args.get('access_token')
     if flask_request.method == 'GET':
-        return get_hashtags(store_id, access_token)
+        return get_hashtags(store_id)
     else:
-        return update_hashtags(store_id, access_token)
+        return update_hashtags(store_id)
 
 
 @app.route('/api/v1/stores/<store_id>/products')
