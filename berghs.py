@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-# Test test
 
 import requests
 from flask import Flask, json, render_template, request as flask_request
 
 app = Flask(__name__)
-count = 0
 
 def get_products(store_id, access_token):
     url = 'https://api.tictail.com/v1/stores/{0}/products?access_token={1}'
@@ -22,14 +20,6 @@ def get_teapot():
     if flask_request.method == 'POST':
         return json.dumps(flask_request.form)
     return json.dumps(flask_request.args)
-
-
-@app.route('/api/v1/count')
-def get_count():
-    global count
-    count += 1
-    return json.dumps(dict(count=count))
-
 
 @app.route('/api/v1/stores/<store_id>/products')
 def get_store_products(store_id):
