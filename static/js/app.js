@@ -41,6 +41,32 @@
       }, 'json');
     },
 
+    saveHashtags: function(table) {
+      var resource, $field, hashtags = [];
+      $('tbody tr', table).each(function(i, row) {
+        resource = {};
+        $('input', row).each(function(j, field) {
+          $field = $(field);
+          resource[$field.attr('name')] = $field.val();
+        });
+        hashtags.push(resource);
+      });
+
+      $.ajax({
+        type: 'PUT',
+        url: this.getEndpointURL('/stores/' + this.store.id + '/hashtags'),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json',
+        data: JSON.stringify(hashtags),
+        success: function(response) {
+          TT.native.showStatus('Woop!');
+        },
+        failure: function() {
+          reportError();
+        }
+      });
+    },
+
     renderProducts: function(products) {
       resetContent();
 
@@ -54,15 +80,18 @@
       table = $(Handlebars.compile(Nodes.template.product.table)());
       body = $('tbody', table);
 
-      console.log('table', table);
       for (i = 0; i < count; i++) {
         product = products[i];
-        console.log('product', product);
-        var foo = row(product);
-        console.log('row', foo);
-        body.append(foo);
+        body.append(row(product));
       }
+
       Nodes.content.append(table);
+
+      var self = this;
+      $('#save-btn').click(function(e) {
+        e.preventDefault();
+        self.saveHashtags(table);
+      });
     },
 
     renderZeroProducts: function() {

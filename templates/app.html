@@ -28,6 +28,7 @@
                 </thead>
                 <tbody></tbody>
             </table>
+            <button type="button" id="save-btn" class="btn btn-primary pull-right">Save</button>
             {% endraw %}
         </script>
 
@@ -35,8 +36,11 @@
             {% raw %}
             <tr>
                 <td></td>
-                <td>{{title}}</td>
-                <td>{{hashtag}}</td>
+                <td><a href="/product/{{slug}}">{{title}}</a></td>
+                <td>
+                    <input type="hidden" name="product_id" value="{{id}}" />
+                    <input class="form-control" type="text" name="hashtag" value="{{hashtag}}" />
+                </td>
             </tr>
             {% endraw %}
         </script>

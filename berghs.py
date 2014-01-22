@@ -11,14 +11,19 @@ db = {
     'hashtags': {}
 }
 
+def get_cached_hashtag(product_id, default=None):
+    return db['hashtags'].get(product_id, default)
 
 def get_hashtag(store, product):
-    hashtag = db['hashtags'].get(product['id'], None)
+    product_id = product['id']
+    hashtag = get_cached_hashtag(product_id)
     if hashtag:
         return hashtag
 
     subdomain = store['dashboard_url'].split('/')[-1]
-    return '{0}-{1}'.format(subdomain, product['slug'])
+    hashtag = '{0}-{1}'.format(subdomain, product['slug'])
+    db['hashtags'][product_id] = hashtag
+    return hashtag
 
 
 def get(url):
@@ -44,11 +49,46 @@ def get_products(store_id, access_token):
     return get(get_endpoint_url(access_token, '/stores/{0}/products', store_id))
 
 
+def get_hashtags(store_id, access_token):
+    store_products = db['products'].get(store_id, [])
+    if not store_products:
+        return json.dumps([])
+
+    hashtags = []
+    for product in store_products:
+        product_id = product['id']
+        hashtags.append({
+            'product_id': product_id,
+            'hashtag': get_cached_hashtag(product_id, product['hashtag']),
+        })
+
+    return json.dumps(hashtags)
+
+
+def update_hashtags(store_id, access_token):
+    resources = flask_request.json
+    for resource in resources:
+        hashtag = resource['hashtag']
+        product_id = resource['product_id']
+        # This is one place where Hyper students will thrive. Watch out ;-)
+        db['hashtags'][product_id] = hashtag
+    return json.dumps(resources)
+
+
 @app.route('/api/v1/teapot', methods=['GET', 'POST'])
 def get_teapot():
     if flask_request.method == 'POST':
         return json.dumps(flask_request.form)
     return json.dumps(flask_request.args)
+
+
+@app.route('/api/v1/stores/<store_id>/hashtags', methods=['GET', 'PUT'])
+def get_or_update_hashtags(store_id):
+    access_token = flask_request.args.get('access_token')
+    if flask_request.method == 'GET':
+        return get_hashtags(store_id, access_token)
+    else:
+        return update_hashtags(store_id, access_token)
 
 
 @app.route('/api/v1/stores/<store_id>/products')
@@ -66,6 +106,8 @@ def get_store_products(store_id):
     for product in products:
         product['hashtag'] = get_hashtag(store, product)
         payload.append(product)
+
+    db['products'][store_id] = payload
     return json.dumps(payload)
 
 
