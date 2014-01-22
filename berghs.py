@@ -15,6 +15,12 @@ def get_products(store_id, access_token):
     products = r.json()
     return products
 
+@app.route('/api/v1/teapot', methods=['GET', 'POST'])
+def get_teapot():
+    if flask_request.method == 'POST':
+        return json.dumps(flask_request.form)
+    return json.dumps(flask_request.args)
+
 
 @app.route('/api/v1/stores/<store_id>/products')
 def get_store_products(store_id):
