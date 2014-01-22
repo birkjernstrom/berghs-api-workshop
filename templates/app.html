@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>My Awesome Tictail App</title>
+
+        <link rel="stylesheet" href="https://sdk.ttcdn.co/tt-uikit-0.11.0.css">
+    </head>
+    <body>
+        <div class="app-container">
+            <header>
+                <h1>Berghsgram</h1>
+            </header>
+
+            <div id="content"></div>
+        </div>
+
+        <script id="template-product-table" type="text/x-handlebars-template">
+            {% raw %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Product</th>
+                        <th>Hashtag</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            {% endraw %}
+        </script>
+
+        <script id="template-product-row" type="text/x-handlebars-template">
+            {% raw %}
+            <tr>
+                <td></td>
+                <td>{{title}}</td>
+                <td>{{hashtag}}</td>
+            </tr>
+            {% endraw %}
+        </script>
+
+        <script id="template-zero-products" type="text/x-handlebars-template">
+            {% raw %}
+                <h1>WTF No products?!</h1>
+            {% endraw %}
+        </script>
+
+        <!-- jQuery (this is required) -->
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <!-- Tictail UIKit JavaScript -->
+        <script src="https://sdk.ttcdn.co/tt-uikit-0.11.0.js"></script>
+        <!-- Tictail JavaScript library -->
+        <script src="https://sdk.ttcdn.co/tt.0.12.0.js"></script>
+        <!-- Handlebars -->
+        <script src="{{ url_for('static', filename='js/handlebars-v1.3.0.js') }}"></script>
+        <!-- Your Own JavaScript -->
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    </body>
+</html>
