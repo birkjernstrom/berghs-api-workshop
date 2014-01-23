@@ -38,7 +38,6 @@
         return;
       }
 
-      hashtag = 'tictail';
       var self = this;
       $.ajax({
         url: 'https://api.instagram.com/v1/tags/' + hashtag + '/media/recent?access_token=' + this.settings.accessToken,
